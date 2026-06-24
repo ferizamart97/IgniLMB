@@ -185,7 +185,7 @@
 
   function normalizeGamesBack(value, rank) {
     const raw = String(value ?? '').trim();
-    if (rank === 1 || raw === '-' || raw === '0' || raw === '0.0') return 'Lider';
+    if (rank === 1 || raw === '-' || raw === '0' || raw === '0.0') return 'Líder';
     return raw || '--';
   }
 

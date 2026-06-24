@@ -93,7 +93,7 @@
   }
 
   function leaderLabel(team) {
-    return team?.rank === 1 || team?.gb === 'Lider';
+    return team?.rank === 1 || team?.gb === 'Líder';
   }
 
   function getLeagueLeaders(limit = 1) {
@@ -229,7 +229,7 @@
     if (!toast || !top) return;
 
     toast.querySelector('.toast-txt').innerHTML = `
-      <strong>${escapeHtml(top.n)} lidera la liga</strong>
+      <strong>${escapeHtml(top.n)} encabeza la liga</strong>
       ${escapeHtml(`${top.w}-${top.l}`)} - PCT ${pctText(top.pct)} - Racha ${escapeHtml(streakText(top))}
     `;
   }
@@ -245,7 +245,7 @@
     }
 
     card.innerHTML = `
-      <div class="hcard-badge">Lider de Liga</div>
+      <div class="hcard-badge">Líder de Liga</div>
       <div class="hrank">#1</div>
       <div class="hlogo-wrap">
         <img src="${logoUrl(top.id)}" alt="${escapeHtml(top.n)}" onerror="this.src='${logoFallback()}'" />
@@ -274,7 +274,7 @@
         <p class="ksb">${escapeHtml(sub)}</p>
         <div class="kval"${valueId ? ` id="${valueId}"` : ''}>${escapeHtml(value)}</div>
         <div class="kteam">
-          ${team ? `<div class="ktl"><img src="${logoUrl(team.id)}" alt="" onerror="this.src='${logoFallback()}'" /></div>` : ''}
+          ${team ? `<div class="ktl"><img src="${logoUrl(team.id)}" alt="Escudo de ${escapeHtml(team.n)}" onerror="this.src='${logoFallback()}'" /></div>` : ''}
           <span>${escapeHtml(teamText)}</span>
         </div>
         <div class="kico" aria-hidden="true">${escapeHtml(icon)}</div>
@@ -485,7 +485,7 @@
       <div class="tc-right">
         <div class="tc-pct ${pctClass}">${pctText(team.pct)}</div>
         <div class="tc-sub">JJ ${numText(team.gp)}</div>
-        <div class="tc-sub">${leaderLabel(team) ? '<span style="color:var(--verde);font-weight:700">Lider</span>' : `JD ${escapeHtml(team.gb)}`}</div>
+        <div class="tc-sub">${leaderLabel(team) ? '<span style="color:var(--verde);font-weight:700">Líder</span>' : `JD ${escapeHtml(team.gb)}`}</div>
         <div class="tc-cta">Ver detalle</div>
       </div>
     </div>`;
@@ -583,7 +583,7 @@
     const dLogo = $('d-logo');
     if (dLogo) {
       dLogo.src = logoUrl(team.id);
-      dLogo.alt = team.n;
+      dLogo.alt = `Escudo de ${teamFullName(team)}`;
       dLogo.onerror = function () { this.src = logoFallback(); };
     }
 
