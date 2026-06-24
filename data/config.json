@@ -1,0 +1,17 @@
+{
+  "site": {
+    "name": "LMB 2026 - Posiciones Temporada",
+    "url": "https://ignilmb.example.com/",
+    "description": "Consulta las posiciones de la Liga Mexicana de Beisbol 2026 por division, porcentaje, victorias, rachas y splits de temporada."
+  },
+  "league": {
+    "id": 125,
+    "name": "Liga Mexicana de Beisbol",
+    "season": "2026"
+  },
+  "api": {
+    "standingsEndpoint": "https://statsapi.mlb.com/api/v1/standings?leagueId=125&season=2026",
+    "timeoutMs": 12000
+  },
+  "comment": "Configuracion publica del frontend. No pongas API keys, tokens ni secretos aqui."
+}

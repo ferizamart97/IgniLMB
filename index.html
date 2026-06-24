@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ============ SEO PRINCIPAL (va en el HTML, nunca por API) ============ -->
+  <title>LMB 2026 - Posiciones Temporada</title>
+
+  <meta name="description"
+    content="Consulta las posiciones de la Liga Mexicana de Beisbol 2026 por division, porcentaje, victorias, rachas y splits de temporada.">
+
+  <link rel="canonical" href="https://lmb.ferizamart97.dev/">
+
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / previews en redes -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="LMB 2026 - Posiciones Temporada">
+  <meta property="og:description"
+    content="Tabla dinamica de posiciones de la Liga Mexicana de Beisbol 2026 con datos de MLB Stats API.">
+  <meta property="og:image" content="https://lmb.ferizamart97.dev/assets/img/og-cover.svg">
+  <meta property="og:url" content="https://lmb.ferizamart97.dev/">
+  <meta property="og:site_name" content="Igni LMB">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LMB 2026 - Posiciones Temporada">
+  <meta name="twitter:description"
+    content="Consulta posiciones, victorias, porcentaje, rachas y splits de la LMB 2026.">
+
+  <!-- Datos estructurados -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "LMB 2026 - Posiciones Temporada",
+    "url": "https://lmb.ferizamart97.dev/",
+    "inLanguage": "es-MX",
+    "description": "Consulta las posiciones de la Liga Mexicana de Beisbol 2026 por division, porcentaje, victorias, rachas y splits de temporada."
+  }
+  </script>
+
+  <!-- ============ RENDIMIENTO: conexiones tempranas ============ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://statsapi.mlb.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <link rel="icon" type="image/png" href="./assets/img/logoLMB.png" sizes="1095x1095">
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#0C1C2E">
+
+  <!-- Hojas de estilo en orden de dependencia: reset -> variables -> estilos -->
+  <link rel="stylesheet" href="./css/reset.min.css">
+  <link rel="stylesheet" href="./css/variables.min.css">
+  <link rel="stylesheet" href="./css/main.min.css">
+</head>
+
+<body>
+  <!-- ═══════════════════════════════════════════
+     PANTALLA DE CARGA — SCOREBOARD
+═══════════════════════════════════════════ -->
+  <div id="loader">
+
+    <!-- Logo LMB con pulso -->
+    <div class="ld-logo">
+      <img src="./assets/img/logoLMB.png" alt="Liga Mexicana de Beisbol" onerror="this.style.display='none'" />
+      <span class="ld-season">Temporada 2026</span>
+    </div>
+
+    <!-- Scoreboard tipo estadio — Top 3 de la liga -->
+    <div class="ld-board">
+      <div class="ld-board-header">
+        <span class="ld-board-title">Posiciones LMB 2026</span>
+        <div class="ld-board-live">
+          <div class="ld-live-dot"></div>
+          En vivo
+        </div>
+      </div>
+      <div class="ld-board-body">
+        <!-- Encabezados de columnas -->
+        <div class="ld-row-head">
+          <div class="ld-col-h">Equipo</div>
+          <div class="ld-col-h">G</div>
+          <div class="ld-col-h">P</div>
+          <div class="ld-col-h">PCT</div>
+        </div>
+
+        <div class="ld-row">
+          <div class="ld-team">
+            <div>
+              <div class="ld-team-name">Cargando datos</div>
+              <div class="ld-team-city">Servicio de posiciones</div>
+            </div>
+          </div>
+          <div class="ld-cell wins"><span>--</span></div>
+          <div class="ld-cell losses"><span>--</span></div>
+          <div class="ld-cell pct"><span>--</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barra de progreso tricolor -->
+    <div class="ld-progress">
+      <div class="ld-bar-wrap">
+        <div class="ld-bar"></div>
+      </div>
+      <div class="ld-status">Cargando estadísticas</div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+     TOAST — Notificación del líder
+═══════════════════════════════════════════ -->
+  <div id="toast-top1">
+    <div class="toast-ico" aria-hidden="true">&#9918;</div>
+    <div class="toast-txt">
+      <strong>Cargando lider de liga</strong>
+      Servicio de posiciones
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div id="mf" onclick="hideFgt(event)">
+    <div class="mc">
+      <button class="mclose" onclick="hideFgt(null,1)">×</button>
+      <div class="mt">Recuperar acceso</div>
+      <p class="ms">Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.</p>
+      <div class="fg"><label class="fl">Correo electrónico</label><input class="fi" type="email"
+          placeholder="tu@correo.com" /></div>
+      <button class="ba" style="margin-bottom:0" onclick="hideFgt(null,1)">Enviar enlace de recuperación</button>
+    </div>
+  </div>
+
+  <!-- DRAWER -->
+  <div id="do" onclick="closeDr()"></div>
+  <div id="dr" role="dialog" aria-modal="true">
+    <button class="dclose" onclick="closeDr()">×</button>
+    <div class="dr-banner">
+      <div class="dr-banner-pattern"></div>
+      <div class="dr-banner-lines"></div>
+      <div class="dr-banner-content">
+        <div class="dr-logo"><img id="d-logo" src="" alt="" /></div>
+        <div class="dr-hi">
+          <div class="dr-name" id="d-name">—</div>
+          <div class="dr-sub" id="d-div">—</div>
+          <div class="dr-rec" id="d-rec">—</div>
+        </div>
+      </div>
+    </div>
+    <div class="dr-body">
+      <div class="dsgrid">
+        <div class="dst">
+          <div class="dsl">Victorias</div>
+          <div class="dsv" id="d-w">—</div>
+          <div class="dss">Temporada regular</div>
+        </div>
+        <div class="dst">
+          <div class="dsl">Derrotas</div>
+          <div class="dsv" id="d-l">—</div>
+          <div class="dss">Temporada regular</div>
+        </div>
+        <div class="dst">
+          <div class="dsl">Porcentaje</div>
+          <div class="dsv" id="d-pct">—</div>
+          <div class="dss">Win %</div>
+        </div>
+        <div class="dst">
+          <div class="dsl">Juegos jugados</div>
+          <div class="dsv" id="d-gp">—</div>
+          <div class="dss">Temporada</div>
+        </div>
+        <div class="dst">
+          <div class="dsl">Juegos atrás</div>
+          <div class="dsv" id="d-gb">—</div>
+          <div class="dss">vs líder</div>
+        </div>
+        <div class="dst">
+          <div class="dsl">Dif. carreras</div>
+          <div class="dsv" id="d-rd">—</div>
+          <div class="dss">± en temporada</div>
+        </div>
+        <div class="dst">
+          <div class="dsl">Carreras anotadas</div>
+          <div class="dsv" id="d-rs">—</div>
+          <div class="dss">Temporada</div>
+        </div>
+        <div class="dst">
+          <div class="dsl">Carreras permitidas</div>
+          <div class="dsv" id="d-ra">—</div>
+          <div class="dss">Temporada</div>
+        </div>
+      </div>
+      <div class="dsec">
+        <div class="dsect"><span aria-hidden="true" style="margin-right:6px">#</span>Splits de temporada</div>
+        <div class="srow"><span class="slab">En casa</span><span class="sval" id="d-hm">—</span></div>
+        <div class="srow"><span class="slab">De visita</span><span class="sval" id="d-aw">—</span></div>
+        <div class="srow"><span class="slab">vs División Norte</span><span class="sval" id="d-dn">—</span></div>
+        <div class="srow"><span class="slab">vs División Sur</span><span class="sval" id="d-ds">—</span></div>
+        <div class="srow"><span class="slab">Juegos de 1 carrera</span><span class="sval" id="d-1r">—</span></div>
+        <div class="srow"><span class="slab">Extra innings</span><span class="sval" id="d-ei">—</span></div>
+      </div>
+      <div class="dsec">
+        <div class="dsect"><span aria-hidden="true" style="margin-right:6px">10</span>Ultimos 10 juegos</div>
+        <div class="l10" id="d-l10"></div>
+      </div>
+      <div class="dsec">
+        <div class="dsect"><span aria-hidden="true" style="margin-right:6px">R</span>Racha actual</div>
+        <div class="dr-streak">
+          <div class="dr-stk-num" id="d-stk">—</div>
+          <div class="dr-stk-lbl" id="d-stklbl">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+     APP
+═══════════════════════════════════════════ -->
+  <div id="app">
+
+    <!-- NAVBAR -->
+    <nav class="nav" id="navbar" aria-label="Principal">
+      <div class="nav-inner">
+        <div class="nav-links nav-links-left">
+          <a class="nlink on" href="#top">Inicio</a>
+          <a class="nlink" href="#equipos">Equipos</a>
+        </div>
+        <a class="nav-logo" href="#top" aria-label="Ir al inicio">
+          <img src="./assets/img/logoLMB.png" alt="Liga Mexicana de Beisbol"
+            onerror="this.outerHTML='<span style=&quot;font-family:var(--fn);font-size:24px;color:var(--rojo)&quot;>LMB</span>'" />
+        </a>
+        <div class="nav-links nav-links-right">
+          <a class="nlink" href="#posiciones">Posiciones</a>
+          <a class="nlink" href="#estadisticas">Estadísticas</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-img"></div>
+      <div class="hero-shield"></div>
+      <div class="hero-tricolor"></div>
+      <div class="hero-tricolor-b"></div>
+      <div class="hero-glow-top"></div>
+      <div class="hero-grid"></div>
+      <div class="hero-pitch-line"></div>
+      <!-- Confeti de celebración -->
+      <div class="confetti-container" id="confetti-wrap"></div>
+
+      <div class="h-season ha">
+        <span class="h-season-dot"></span>
+        Liga Mexicana de Beisbol
+        <span class="h-season-dot"></span>
+      </div>
+
+      <h1 class="h-tt ha" style="transition-delay:.12s">
+        Temporada<br>
+        <span class="h-yr">2026</span>
+      </h1>
+
+      <p class="h-st ha" style="transition-delay:.24s">Posiciones · División Norte &amp; Sur</p>
+
+      <!-- Hero card: se llena desde MLB Stats API -->
+      <div class="hcard ha" style="transition-delay:.40s">
+        <p style="font-family:var(--fb);font-size:13px;color:var(--t3);padding:16px 0">Cargando líder de la liga.</p>
+      </div>
+
+      <a href="#estadisticas" class="hscroll ha" style="transition-delay:.56s">
+        <span>Ver estadísticas</span>
+        <div class="hscroll-ic" aria-hidden="true">&#9660;</div>
+      </a>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="mq-sec" id="equipos">
+      <div class="mq-track" id="mtrack"></div>
+    </div>
+
+    <!-- KPIs -->
+    <section class="sec" id="estadisticas">
+      <p class="slbl rv">Resumen estadístico · Temporada 2026</p>
+      <h2 class="stit rv">Números que<br>definen la liga</h2>
+      <div class="kgrid">
+        <div class="kpi c-o rv d1">
+          <p class="klbl">Mejor equipo</p>
+          <p class="ksb">PCT más alto de liga</p>
+          <div class="kval">--</div>
+          <div class="kteam">
+            <span>Cargando datos</span>
+          </div>
+          <div class="kico" aria-hidden="true">1</div>
+        </div>
+        <div class="kpi c-r rv d2">
+          <p class="klbl">Más victorias</p>
+          <p class="ksb">Temporada regular 2026</p>
+          <div class="kval" id="kv-w">--</div>
+          <div class="kteam">
+            <span>Cargando datos</span>
+          </div>
+          <div class="kico" aria-hidden="true">W</div>
+        </div>
+        <div class="kpi c-g rv d3">
+          <p class="klbl">Mejor porcentaje</p>
+          <p class="ksb">Record en casa</p>
+          <div class="kval">--</div>
+          <div class="kteam">
+            <span>Cargando datos</span>
+          </div>
+          <div class="kico" aria-hidden="true">H</div>
+        </div>
+        <div class="kpi c-a rv d4">
+          <p class="klbl">Mejor racha activa</p>
+          <p class="ksb">Racha ganadora</p>
+          <div class="kval">--</div>
+          <div class="kteam">
+            <span>Cargando datos</span>
+          </div>
+          <div class="kico" aria-hidden="true">R</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- POSICIONES — Vista completa siempre -->
+    <section class="sec" id="posiciones">
+      <div class="pos-head">
+        <div>
+          <p class="slbl rv">Posiciones · Temporada 2026</p>
+          <h2 class="stit rv" style="margin-bottom:0">Así está<br>la pelea</h2>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="fbar rv" style="position:relative">
+        <div style="position:relative;flex:1;min-width:180px">
+          <span aria-hidden="true"
+            style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:12px;pointer-events:none">&#128269;</span>
+          <input class="fi2" type="text" id="srch" placeholder="Buscar equipo o ciudad..." oninput="applyF()"
+            style="padding-left:38px" />
+        </div>
+        <select class="fsel" id="fdiv" onchange="applyF()">
+          <option value="">Todas las divisiones</option>
+          <option value="norte">División Norte</option>
+          <option value="sur">División Sur</option>
+        </select>
+        <div class="fbg">
+          <label class="fsep" for="sort-select">Ordenar:</label>
+          <select class="fsel fsort" id="sort-select" onchange="setS(this.value)">
+            <option value="rank">Ranking</option>
+            <option value="wins">Victorias</option>
+            <option value="pct">Porcentaje</option>
+          </select>
+        </div>
+      </div>
+      <p class="fres" id="fres">Cargando equipos</p>
+
+      <!-- Vista completa (split siempre) -->
+      <div class="split-view">
+        <div>
+          <div class="sc-head norte">
+            <div class="sc-ico norte"></div>
+            <div class="sc-lbl norte">División Norte</div>
+            <div class="sc-cnt">-- equipos</div>
+          </div>
+          <div class="tgrid" id="gsn"></div>
+        </div>
+        <div>
+          <div class="sc-head sur">
+            <div class="sc-ico sur"></div>
+            <div class="sc-lbl sur">División Sur</div>
+            <div class="sc-cnt">-- equipos</div>
+          </div>
+          <div class="tgrid" id="gss"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- TOP 5 -->
+    <section class="sec">
+      <p class="slbl rv">La carrera al título</p>
+      <h2 class="stit rv">Top 5 por División</h2>
+      <div class="t5pair">
+        <div class="rv d1" id="t5norte"></div>
+        <div class="rv d2" id="t5sur"></div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="fi-inner">
+        <div>
+          <img class="fi-logo" src="./assets/img/logoLMB.png" alt="Liga Mexicana de Beisbol"
+            onerror="this.style.display='none'" />
+          <p class="fi-txt">
+            Liga Mexicana de Beisbol · Temporada 2026<br>
+            <a href="https://lmb.com.mx" target="_blank" rel="noopener noreferrer">lmb.com.mx</a> ·
+            <a href="https://www.lmb.tv" target="_blank" rel="noopener noreferrer">lmb.tv</a><br>
+            <span style="font-size:10px">© 2026 Liga Mexicana de Beisbol. Todos los derechos reservados.</span>
+          </p>
+        </div>
+        <div>
+          <p
+            style="font-family:var(--fb);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:10px">
+            Síguenos</p>
+          <div class="fi-socs">
+            <a class="fsoc" href="https://x.com/LMBBanorte" target="_blank" rel="noopener noreferrer">X</a>
+            <a class="fsoc" href="https://www.instagram.com/ligamexbeis/" target="_blank" rel="noopener noreferrer">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+              </svg>
+            </a>
+            <a class="fsoc" href="https://www.facebook.com/LigaMexicanadeBeisbolBanorte" target="_blank" rel="noopener noreferrer">f</a>
+            <a class="fsoc" href="https://www.youtube.com/@LMBBanorteOficial" target="_blank" rel="noopener noreferrer">&#9654;</a>
+          </div>
+        </div>
+      </div>
+      <div class="fi-bottom">
+        <span>Datos actualizados al cargar</span>
+        <a href="https://lmb.com.mx/privacidad">Políticas de privacidad</a>
+      </div>
+    </footer>
+
+  </div><!-- /app -->
+
+  <script src="./js/api.js"></script>
+  <script src="./js/ui.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+
+</html>

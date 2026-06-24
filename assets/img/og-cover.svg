@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">LMB 2026 - Posiciones Temporada</title>
+  <desc id="desc">Portada social para la landing de posiciones de la Liga Mexicana de Beisbol.</desc>
+  <rect width="1200" height="630" fill="#07090F"/>
+  <path d="M0 0h1200v28H0z" fill="#3D9A3D"/>
+  <path d="M0 602h1200v28H0z" fill="#E00020"/>
+  <circle cx="930" cy="315" r="190" fill="#0D1128" stroke="#E00020" stroke-width="12"/>
+  <circle cx="930" cy="315" r="126" fill="#F2F5FF"/>
+  <path d="M816 260c70 42 158 42 228 0M816 370c70-42 158-42 228 0" fill="none" stroke="#0D1128" stroke-width="22" stroke-linecap="round"/>
+  <text x="88" y="202" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="86" font-weight="700">LMB 2026</text>
+  <text x="88" y="304" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="68" font-weight="700">Posiciones</text>
+  <text x="88" y="374" fill="#7B91B8" font-family="Arial, Helvetica, sans-serif" font-size="32">Norte, Sur, victorias, porcentaje y rachas</text>
+  <text x="88" y="446" fill="#C9A84C" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Datos: MLB Stats API</text>
+</svg>

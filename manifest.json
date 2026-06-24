@@ -1,0 +1,23 @@
+{
+  "name": "Igni LMB - Posiciones Temporada",
+  "short_name": "Igni LMB",
+  "description": "Landing de posiciones de la Liga Mexicana de Beisbol 2026.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "lang": "es-MX",
+  "dir": "ltr",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0C1C2E",
+  "theme_color": "#0C1C2E",
+  "categories": ["sports"],
+  "icons": [
+    {
+      "src": "./assets/img/logoLMB.png",
+      "sizes": "1095x1095",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
