@@ -6,7 +6,7 @@ Landing page de posiciones de la Liga Mexicana de Beisbol para la temporada 2026
 
 El proyecto muestra una landing responsiva para consultar:
 
-- Lider general de la liga.
+- Primer lugar general de la liga.
 - KPIs principales de temporada.
 - Posiciones por Division Norte y Division Sur.
 - Busqueda por equipo o ciudad.
@@ -31,6 +31,7 @@ No requiere framework, bundler ni backend propio.
 IgniLMB/
   index.html
   README.md
+  desafio-2.txt
   manifest.json
   robots.txt
   sitemap.xml
@@ -90,7 +91,7 @@ Ejemplo actual:
 {
   "site": {
     "name": "LMB 2026 - Posiciones Temporada",
-    "url": "https://ignilmb.example.com/",
+    "url": "https://lmb.ferizamart97.dev/",
     "description": "Consulta las posiciones de la Liga Mexicana de Beisbol 2026 por division, porcentaje, victorias, rachas y splits de temporada."
   },
   "league": {
@@ -180,7 +181,7 @@ Responsabilidades:
 
 - Mantener `state.teams`, `state.meta`, `state.error` y `state.sortK`.
 - Renderizar loader y estado de carga.
-- Renderizar hero y lider de liga.
+- Renderizar hero y equipo que encabeza la liga.
 - Renderizar KPIs.
 - Renderizar posiciones por division.
 - Aplicar busqueda, filtro por division y ordenamiento.
@@ -221,9 +222,10 @@ Responsabilidades:
 - Metadatos SEO.
 - Open Graph y Twitter Card.
 - Datos estructurados JSON-LD.
+- Apple Touch icon para iOS.
 - Links a CSS minificado.
 - Loader inicial.
-- Toast de lider.
+- Toast del equipo que encabeza la liga.
 - Modal de recuperacion.
 - Drawer de detalle.
 - Navbar.
@@ -232,9 +234,12 @@ Responsabilidades:
 - KPIs.
 - Posiciones.
 - Top 5.
+- Seccion informativa SEO con texto util sobre como leer la tabla.
 - Footer.
 
 Los textos iniciales son placeholders. Cuando el API responde, `ui.js` reemplaza el contenido con datos reales.
+
+Todas las imagenes visibles tienen atributo `alt`. En el caso de logos dinamicos de equipos, `ui.js` genera el texto alternativo con el nombre del equipo correspondiente.
 
 ## CSS
 
@@ -255,6 +260,13 @@ Despues de modificar CSS fuente, regenerar minificados:
 ```bash
 node minify-css.js
 ```
+
+El carrusel de logos usa reglas compatibles con navegadores WebKit/Safari:
+
+- `inline-flex` y ancho `max-content` con prefijos.
+- `translate3d()` para animacion acelerada por GPU.
+- `@-webkit-keyframes` junto con `@keyframes`.
+- Logos con tamano y `flex-basis` fijos para evitar colapsos visuales.
 
 ## Responsive
 
@@ -295,6 +307,14 @@ Archivos relacionados:
 - `assets/img/og-cover.svg`: imagen para previews sociales.
 - `index.html`: title, description, canonical, Open Graph, Twitter Card y JSON-LD.
 
+Ajustes aplicados para auditoria SEO:
+
+- `apple-touch-icon` declarado en `index.html`.
+- Imagenes con `alt` descriptivo.
+- Textos visibles corregidos para evitar palabras sin acento y usar "encabeza" cuando aplica mejor al contexto.
+- Se agrego una seccion de contenido informativo para superar el minimo recomendado de 250 palabras.
+- Metadatos enfocados en LMB, no en contenido de plantilla anterior.
+
 Antes de produccion, actualizar:
 
 - Dominio real en `index.html`.
@@ -302,6 +322,21 @@ Antes de produccion, actualizar:
 - Dominio real en `robots.txt` si aplica.
 - Dominio real en `data/config.json`.
 - `og:image` si se cambia el asset social.
+
+## Archivo de entrega
+
+Para entregar el proyecto en ZIP se incluye:
+
+```text
+desafio-2.txt
+```
+
+El archivo contiene:
+
+- Liga del repositorio.
+- Liga publica del sitio desplegado.
+
+Si cambia el dominio o el repositorio, actualizar ese archivo antes de comprimir el proyecto.
 
 ## Apache y despliegue
 
